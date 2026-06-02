@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Опросник · Исполнительный директор · Свой Девелопмент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #3ecfb2;
+    --dark: #091521;
+    --white: #ffffff;
+    --gray: #8a9baa;
+    --bg: #f4f7f6;
+    --border: #dde8e5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: #1a2a35; min-height: 100vh; }
+
+  .page-header { background: var(--dark); padding: 60px 60px 50px; position: relative; overflow: hidden; }
+  .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), transparent); }
+  .back-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 32px; opacity: 0.8; transition: opacity 0.2s; }
+  .back-link:hover { opacity: 1; }
+  .header-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
+  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--white); line-height: 1.1; margin-bottom: 16px; }
+  .header-desc { font-size: 13px; font-weight: 300; color: var(--gray); max-width: 560px; line-height: 1.8; }
+  .header-num { position: absolute; right: 60px; top: 40px; font-family: 'Cormorant Garamond', serif; font-size: 120px; font-weight: 300; color: rgba(62,207,178,0.07); line-height: 1; }
+
+  .form-wrap { max-width: 800px; margin: 0 auto; padding: 60px 60px 80px; }
+  .section-block { margin-bottom: 56px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--dark); margin-bottom: 32px; padding-bottom: 14px; border-bottom: 2px solid var(--teal); display: flex; align-items: baseline; gap: 16px; }
+  .section-num { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; }
+
+  .question { margin-bottom: 32px; }
+  .question label { display: block; font-size: 13px; font-weight: 500; color: #1a2a35; margin-bottom: 6px; line-height: 1.6; }
+  .question .hint { font-size: 11px; color: var(--gray); font-weight: 300; margin-bottom: 10px; font-style: italic; }
+  .question textarea { width: 100%; min-height: 120px; padding: 16px 20px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; color: #1a2a35; background: var(--white); border: 1px solid var(--border); border-radius: 2px; resize: vertical; outline: none; transition: border-color 0.3s; line-height: 1.7; }
+  .question textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(62,207,178,0.08); }
+  .question textarea::placeholder { color: #b0bec5; }
+
+  .name-field { background: var(--white); border: 1px solid var(--border); padding: 24px 28px; margin-bottom: 48px; display: flex; align-items: center; gap: 20px; }
+  .name-field label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); white-space: nowrap; }
+  .name-field input { flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 400; color: #1a2a35; outline: none; background: transparent; transition: border-color 0.3s; }
+  .name-field input:focus { border-color: var(--teal); }
+
+  .submit-wrap { padding-top: 16px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .submit-note { font-size: 11px; color: var(--gray); font-weight: 300; line-height: 1.6; max-width: 380px; }
+  .submit-btn { background: var(--teal); color: var(--dark); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 18px 40px; transition: all 0.3s; white-space: nowrap; }
+  .submit-btn:hover { background: var(--dark); color: var(--teal); box-shadow: inset 0 0 0 1px var(--teal); }
+  .success-msg { display: none; background: var(--dark); color: var(--teal); padding: 24px 32px; margin-top: 24px; font-size: 13px; font-weight: 400; line-height: 1.7; border-left: 3px solid var(--teal); }
+
+  @media (max-width: 768px) {
+    .page-header { padding: 40px 24px 36px; }
+    .header-title { font-size: 36px; }
+    .header-num { display: none; }
+    .form-wrap { padding: 40px 24px 60px; }
+    .submit-wrap { flex-direction: column; gap: 20px; align-items: stretch; }
+    .submit-btn { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a class="back-link" href="index.html">← Назад</a>
+  <div class="header-num">02</div>
+  <p class="header-label">Опросник 02 · Исполнительный директор</p>
+  <h1 class="header-title">Для исполнительного<br>директора</h1>
+  <p class="header-desc">
+    Олег, ваши ответы помогут мне понять операционную реальность компании — как она устроена изнутри, где работает, где нет. Отвечайте честно и конкретно. Заполненный опросник прошу передать до первой встречи.
+  </p>
+</div>
+
+<div class="form-wrap">
+
+  <form id="survey-form" action="https://formspree.io/f/xkopvegv" method="POST">
+
+    <input type="hidden" name="_subject" value="Опросник: Исполнительный директор · Свой Девелопмент">
+
+    <div class="name-field">
+      <label>Имя</label>
+      <input type="text" name="name" value="Олег Рассейкин" placeholder="Олег Рассейкин">
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section-block">
+      <div class="section-title"><span class="section-num">01</span>Текущая система мотивации</div>
+
+      <div class="question">
+        <label>Как сейчас устроена мотивация топ-команды — есть ли переменная часть, бонусы, KPI?</label>
+        <p class="hint">Опишите как есть, без приукрашивания</p>
+        <textarea name="q1" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Есть ли KPI, которые уже используются? Где они работают, а где нет?</label>
+        <textarea name="q2" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Были ли раньше попытки внедрить KPI или систему мотивации? Что пошло не так?</label>
+        <textarea name="q3" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Считает ли команда текущую систему оплаты справедливой?</label>
+        <textarea name="q4" placeholder="Опишите свободно..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section-block">
+      <div class="section-title"><span class="section-num">02</span>Команда и люди</div>
+
+      <div class="question">
+        <label>Кто в команде работает так, как вы хотите? Что именно они делают правильно?</label>
+        <textarea name="q5" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Где в команде есть проблемы с результатом или мотивацией? Что именно не так?</label>
+        <textarea name="q6" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Есть ли люди, которые будут сопротивляться внедрению KPI — и почему?</label>
+        <textarea name="q7" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Кто будет администрировать систему мотивации после внедрения?</label>
+        <textarea name="q8" placeholder="Опишите свободно..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section-block">
+      <div class="section-title"><span class="section-num">03</span>Проекты и результат</div>
+
+      <div class="question">
+        <label>Как сейчас оценивается результат по проектам — сроки, бюджет, качество?</label>
+        <p class="hint">Есть ли формальные показатели или всё на ощущении?</p>
+        <textarea name="q9" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Что считается хорошей работой руководителя проекта — в конкретных результатах?</label>
+        <textarea name="q10" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Где сейчас главные болевые точки по проектам Окланд, СВОЙ, Август?</label>
+        <textarea name="q11" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Есть ли данные, которые сложно измерить объективно — но которые важны?</label>
+        <textarea name="q12" placeholder="Опишите свободно..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section-block">
+      <div class="section-title"><span class="section-num">04</span>Данные и источники</div>
+
+      <div class="question">
+        <label>Как сейчас фиксируются результаты — сроки, бюджет, качество строительства?</label>
+        <p class="hint">CRM, ERP, Excel, вручную?</p>
+        <textarea name="q13" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Кто отвечает за сбор данных по ключевым показателям? Как часто они обновляются?</label>
+        <textarea name="q14" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Были ли случаи, когда данные оспаривались командой — «цифры неправильные»?</label>
+        <textarea name="q15" placeholder="Опишите свободно..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section-block">
+      <div class="section-title"><span class="section-num">05</span>Ваши ожидания</div>
+
+      <div class="question">
+        <label>Что для вас главный результат этого проекта — через год после внедрения что должно измениться?</label>
+        <textarea name="q16" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Что вас беспокоит больше всего в связи с внедрением новой системы мотивации?</label>
+        <textarea name="q17" placeholder="Опишите свободно..."></textarea>
+      </div>
+      <div class="question">
+        <label>Есть ли что-то важное, что я должна знать до начала работы?</label>
+        <textarea name="q18" placeholder="Опишите свободно..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <p class="submit-note">
+        Ответы будут переданы консультанту Зинаиде Чумаковой и использованы исключительно в рамках проекта разработки системы мотивации.
+      </p>
+      <button type="submit" class="submit-btn">Отправить ответы →</button>
+    </div>
+
+    <div class="success-msg" id="success">
+      Спасибо, Олег. Ваши ответы получены и переданы консультанту.
+    </div>
+
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('survey-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = 'Отправляем...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.reset();
+        document.getElementById('success').style.display = 'block';
+        btn.textContent = 'Отправлено ✓';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Ошибка — попробуйте снова';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Ошибка — попробуйте снова';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
